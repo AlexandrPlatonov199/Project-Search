@@ -5,7 +5,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.configuration.events import on_shutdown, on_startup
-from app.internal.routes import __routes__
+# from app.internal.routes import __routes__
 from app.pkg.models.types.fastapi import FastAPITypes
 from app.pkg.settings import settings
 
@@ -75,7 +75,7 @@ class Server:
             None
         """
 
-        __routes__.register_routes(app)
+        # __routes__.register_routes(app)
 
     @staticmethod
     def __register_cors_origins(app: FastAPITypes.instance) -> None:
