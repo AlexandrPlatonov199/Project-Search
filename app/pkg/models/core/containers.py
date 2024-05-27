@@ -3,10 +3,11 @@
 from dataclasses import dataclass, field
 from typing import Callable, List, Optional, Type, Union
 
-from dependency_injector import containers
+from dependency_injector import containers, providers
 from dependency_injector.containers import Container as _DIContainer
 from fastapi import FastAPI
 
+from app.pkg import handlers
 from app.pkg.models.core.meta import SingletonMeta
 
 __all__ = ["Container", "Containers", "Resource"]
@@ -151,3 +152,94 @@ class Containers:
             setattr(app, container_name.lower(), cont)
 
         return cont
+
+    def set_environment(
+        self,
+        connectors: List[Type[_DIContainer]],
+        *,
+        pkg_name: Optional[str] = None,
+        testing: bool = False,
+        database_configuration_path: str = "POSTGRES.DATABASE_NAME",
+        prefix: Optional[str] = "test_",
+    ) -> None:
+        """Set environment for injection.
+
+        Using `container.configuration` for rewrite
+        ``database_configuration_path`` parameter in `settings`.
+
+        Args:
+            database_configuration_path:
+                Pydantic settings field name that contains database name
+            connectors:
+                Type of database connector
+            testing:
+                If ``True`` then adding prefix from argument ``prefix`` to database name
+            pkg_name:
+                Optional ``__name__`` of running module.
+            prefix:
+                A `prefix` that can be concatenated with the database name
+
+        Returns:
+            None
+        """
+        self.wire_packages(pkg_name=pkg_name, unwire=True)
+
+        if testing:
+            for container in self.containers:
+                if not (
+                    container.container.__name__
+                    in [connector_class.__name__ for connector_class in connectors]
+                    or isinstance(container, Resource)
+                ):
+                    continue
+
+                for depends_on_container in container.depends_on:
+                    self.__patch_container_configuration(
+                        depends_on_container,
+                        database_configuration_path,
+                        prefix,
+                    )
+
+        self.wire_packages(pkg_name=pkg_name)
+
+    @staticmethod
+    def __patch_container_configuration(
+            container: Container,
+            database_configuration_path: str,
+            prefix: str,
+    ) -> Optional[_DIContainer]:
+        """Patch container configuration.
+
+        Args:
+            container: ``Container`` for patch configuration
+            database_configuration_path: Pydantic settings field name that contains
+                database name
+            prefix: A `prefix` that can be concatenated with the database name
+
+        Returns:
+            ``Container`` with patched configuration
+        """
+
+        conf: providers.Configuration = container.container().configuration
+
+        pydantic_settings = conf.get_pydantic_settings()[0]
+
+        database_name = handlers.rec_getattr(
+            pydantic_settings,
+            database_configuration_path,
+        )
+
+        handlers.rec_setattr(
+            pydantic_settings,
+            database_configuration_path,
+            prefix + database_name,
+        )
+
+        pydantic_settings.POSTGRES.DSN = pydantic_settings.POSTGRES.DSN.replace(
+            database_name,
+            prefix + database_name,
+        )
+
+        conf.from_pydantic(pydantic_settings)
+
+        return container

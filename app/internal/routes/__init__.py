@@ -6,6 +6,7 @@ instance that contains all routers in your application.
 from fastapi import APIRouter
 
 from app.pkg.models.core.routes import Routes
+from app.pkg.models.exceptions import users
 
 __all__ = [
     "__routes__",
@@ -13,8 +14,11 @@ __all__ = [
 ]
 
 user_router = APIRouter(
-    prefix="/user",
+    prefix="/v1/user",
     tags=["User"],
+    responses={
+        **users.UserNotFound.generate_openapi(),
+    },
 )
 
 

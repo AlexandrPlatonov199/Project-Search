@@ -9,6 +9,7 @@ from app.internal.routes import user_router
 from app.internal.services import Services
 from app.internal.services.users import UserService
 from app.pkg import models
+from app.pkg.models.exceptions import users
 
 
 @user_router.get(
@@ -22,7 +23,6 @@ async def read_user(
     user_id: uuid.UUID,
     user_service: UserService = Depends(Provide[Services.user_service]),
 ):
-    print(f"router uuid {user_id}")
     return await user_service.read_user(
         query=models.ReadUserQuery(id=user_id),
     )
@@ -33,6 +33,10 @@ async def read_user(
     response_model=models.User,
     status_code=status.HTTP_201_CREATED,
     description="Create user",
+    responses={
+        **users.UserNotFound.generate_openapi(),
+        **users.TelegramUsernameAlreadyExists.generate_openapi(),
+    },
 )
 @inject
 async def create_city(

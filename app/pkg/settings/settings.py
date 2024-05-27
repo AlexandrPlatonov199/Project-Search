@@ -1,13 +1,16 @@
 """Module for load settings form `.env` or if server running with parameter
 `dev` from `.env.dev`"""
 import urllib.parse
+import pathlib
 from typing import Optional
 from functools import lru_cache
 
-from pydantic import PostgresDsn, root_validator
+from pydantic import PostgresDsn, root_validator, validator
 from dotenv import find_dotenv
 from pydantic.env_settings import BaseSettings
 from pydantic.types import PositiveInt, SecretStr
+
+from app.pkg.models.core.logger import LoggerLevel
 
 
 __all__ = ["Settings", "get_settings"]
@@ -73,6 +76,26 @@ class Postgresql(_Settings):
         return values
 
 
+class Logging(_Settings):
+    """Logging settings."""
+
+    #: StrictStr: Level of logging which outs in std
+    LEVEL: LoggerLevel = LoggerLevel.DEBUG
+    #: pathlib.Path: Path of saving logs on local storage.
+    FOLDER_PATH: pathlib.Path = pathlib.Path("./src/logs")
+
+    @validator("FOLDER_PATH")
+    def __create_dir_if_not_exist(  # pylint: disable=unused-private-member, no-self-argument
+        cls,
+        v: pathlib.Path,
+    ):
+        """Create directory if not exist."""
+
+        if not v.exists():
+            v.mkdir(exist_ok=True, parents=True)
+        return v
+
+
 class APIServer(_Settings):
     """API settings."""
 
@@ -81,6 +104,8 @@ class APIServer(_Settings):
     HOST: str = "localhost"
 
     PORT: PositiveInt = 5000
+
+    LOGGER: Logging
 
 
 class Settings(_Settings):

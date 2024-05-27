@@ -2,8 +2,11 @@
 
 from app.internal.repository.repository import BaseRepository
 from app.pkg import models
+from app.pkg.models.exceptions.repository import EmptyResult
 
 __all__ = ["UserService"]
+
+from app.pkg.models.exceptions.users import UserNotFound
 
 
 class UserService:
@@ -38,5 +41,8 @@ class UserService:
         Returns:
             User: Read user.
         """
+        try:
+            return await self.repository.read(query=query)
+        except EmptyResult as e:
+            raise UserNotFound from e
 
-        return await self.repository.read(query=query)
