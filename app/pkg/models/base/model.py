@@ -10,9 +10,12 @@ from uuid import UUID
 
 import pydantic
 from pydantic import UUID4
+from jsf import JSF
 
 
 __all__ = ["BaseModel", "Model"]
+
+from app.pkg.models import types
 
 Model = TypeVar("Model", bound="BaseModel")
 _T = TypeVar("_T")
@@ -101,3 +104,86 @@ class BaseModel(pydantic.BaseModel):
             return v.get_secret_value().decode() if show_secrets else str(v)
         elif isinstance(v, pydantic.SecretStr):
             return v.get_secret_value() if show_secrets else str(v)
+
+    def migrate(
+        self,
+        model: type[BaseModel],
+        random_fill: bool = False,
+        match_keys: dict[str, str] | None = None,
+        extra_fields: dict[str, typing.Any] | None = None,
+    ) -> Model:
+        """Migrate one model to another ignoring missmatch.
+
+        Args:
+            model:
+                Heir BaseModel object.
+            random_fill:
+                If True, then the fields that are not in the
+                model will be filled with random values.
+            match_keys:
+                The keys of this object are the names of the
+                fields of the model to which the migration will be made, and the
+                values are the names of the fields of the current model.
+                Key: name of field in self-model.
+                Value: name of field in a target model.
+            extra_fields:
+                The keys of this object are the names of the
+                fields of the model to which the migration will be made, and the
+                values are the values of the fields of the current model.
+
+                Key: name of field in a target model.
+
+                Value: value of field in a target model.
+
+        Returns:
+            pydantic model parsed from ``model``.
+        """
+
+        self_dict_model = self.to_dict(show_secrets=True)
+
+        if not match_keys:
+            match_keys = {}
+        if not extra_fields:
+            extra_fields = {}
+
+        for key, value in match_keys.items():
+            self_dict_model[key] = self_dict_model.pop(value)
+
+        for key, value in extra_fields.items():
+            self_dict_model[key] = value
+
+        if not random_fill:
+            return pydantic.parse_obj_as(model, self_dict_model)
+
+        faker = JSF(model.schema()).generate()
+        faker.update(self_dict_model)
+        return pydantic.parse_obj_as(model, faker)
+
+    class Config:
+        """Pydantic config class.
+
+        See Also:
+            https://pydantic-docs.helpmanual.io/usage/model_config/
+        """
+
+        # Use enum values instead of names.
+        use_enum_values = True
+
+        # Specify custom json encoders.
+        json_encoders = {
+            pydantic.SecretStr: lambda v: v.get_secret_value() if v else None,
+            pydantic.SecretBytes: lambda v: v.get_secret_value() if v else None,
+            types.EncryptedSecretBytes: lambda v: v.get_secret_value() if v else None,
+            bytes: lambda v: v.decode() if v else None,
+            datetime: lambda v: int(v.timestamp()) if v else None,
+            date: lambda v: int(time.mktime(v.timetuple())) if v else None,
+        }
+
+        # Allow creating new fields in model.
+        allow_population_by_field_name = True
+
+        # Allow validate assignment.
+        validate_assignment = True
+
+        # Remove trailing whitespace
+        anystr_strip_whitespace = True

@@ -54,21 +54,21 @@ class UserFields:
         default=None,
     )
 
-class User(BaseUser):
-    id: uuid.UUID = UserFields.id
+
+class _User(BaseUser):
     email: typing.Optional[EmailStr] = UserFields.email
     telegram: typing.Optional[str] = UserFields.telegram
     first_name: typing.Optional[str] = UserFields.first_name
     last_name: typing.Optional[str] = UserFields.last_name
+
+
+class User(_User):
+    id: uuid.UUID = UserFields.id
 
 
 # Commands.
-class CreateUserCommand(BaseUser):
-    email: typing.Optional[EmailStr] = UserFields.email
-    telegram: typing.Optional[str] = UserFields.telegram
-    password: str = UserFields.password
-    first_name: typing.Optional[str] = UserFields.first_name
-    last_name: typing.Optional[str] = UserFields.last_name
+class CreateUserCommand(_User):
+    ...
 
 
 # Queries.

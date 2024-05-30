@@ -27,6 +27,6 @@ class TelegramUsernameAlreadyExists(BaseAPIException):
 
 
 __constrains__ = {
-    "user_email_key": EmailAlreadyExists,
-    "user_telegram_username_key": TelegramUsernameAlreadyExists,
+    "users_email_key": EmailAlreadyExists,
+    "users_telegram_key": TelegramUsernameAlreadyExists,
 }

@@ -16,9 +16,9 @@ class UserRepository(Repository):
     async def create(self, cmd: models.CreateUserCommand) -> models.User:
         q = """
             insert into users(
-                email, telegram, password, first_name, last_name
+                email, telegram, first_name, last_name
             ) values (
-                %(email)s, %(telegram)s, %(password)s, %(first_name)s, %(last_name)s
+                %(email)s, %(telegram)s, %(first_name)s, %(last_name)s
             )
             returning id, email, telegram, first_name, last_name
         """
@@ -35,6 +35,5 @@ class UserRepository(Repository):
             where id = %(id)s
         """
         async with get_connection() as cur:
-            print(query)
             await cur.execute(q, query.to_dict())
             return await cur.fetchone()

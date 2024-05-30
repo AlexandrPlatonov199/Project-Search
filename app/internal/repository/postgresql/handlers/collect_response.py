@@ -57,7 +57,7 @@ def collect_response(fn):
 
         return pydantic.parse_obj_as(
             (ann := fn.__annotations__["return"]),
-            await __convert_response(response=response, annotations=str(ann)),
+            await __convert_response(response=response, annotations=str(ann))
         )
 
     return inner

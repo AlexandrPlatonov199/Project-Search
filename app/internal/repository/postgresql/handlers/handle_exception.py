@@ -5,10 +5,14 @@ from typing import Callable
 import psycopg2
 
 from app.pkg.models.base import Model
+from app.pkg.logger import get_logger
 from app.pkg.models.exceptions.association import __aiopg__, __constrains__
-from app.pkg.models.exceptions.repository import DriverError
+from app.pkg.models.exceptions.repository import DriverError, EmptyResult
+from app.pkg.models.exceptions.users import UserNotFound
 
 __all__ = ["handle_exception"]
+
+logger = get_logger(__name__)
 
 
 def handle_exception(func: Callable[..., Model]):
@@ -42,7 +46,6 @@ def handle_exception(func: Callable[..., Model]):
             of the database set.
         DriverError: Any error during execution query on a database.
     """
-
     async def wrapper(*args: object, **kwargs: object) -> Model:
         """Inner function. Catching Postgresql Query Exceptions.
 
@@ -64,6 +67,7 @@ def handle_exception(func: Callable[..., Model]):
         try:
             return await func(*args, **kwargs)
         except psycopg2.Error as error:
+            logger.error("An error occurred while executing PostgreSQL query: %s", error)
             if exc := __constrains__.get(error.diag.constraint_name):
                 raise exc from error
 
@@ -71,5 +75,7 @@ def handle_exception(func: Callable[..., Model]):
                 raise exc from error
 
             raise DriverError(details=error.diag.message_detail) from error
+        except EmptyResult as e:
+            raise UserNotFound from e
 
     return wrapper

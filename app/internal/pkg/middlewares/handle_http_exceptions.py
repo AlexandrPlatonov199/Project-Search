@@ -79,8 +79,6 @@ def handle_internal_exception(request: Request, exc: Exception):
 
     del request  # unused
 
-    logger.error(msg=exc)
-
     return JSONResponse(
         status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
         content={"message": repr(exc)},

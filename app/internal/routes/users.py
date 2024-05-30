@@ -39,7 +39,7 @@ async def read_user(
     },
 )
 @inject
-async def create_city(
+async def create_user(
     cmd: models.CreateUserCommand,
     user_service: UserService = Depends(Provide[Services.user_service]),
 ):

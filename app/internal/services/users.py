@@ -41,8 +41,6 @@ class UserService:
         Returns:
             User: Read user.
         """
-        try:
-            return await self.repository.read(query=query)
-        except EmptyResult as e:
-            raise UserNotFound from e
+
+        return await self.repository.read(query=query)
 
