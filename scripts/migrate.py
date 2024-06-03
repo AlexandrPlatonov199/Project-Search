@@ -6,6 +6,7 @@ from argparse import ArgumentParser
 from dependency_injector.wiring import inject
 from yoyo import get_backend, read_migrations
 
+from app.configuration import __containers__
 from app.pkg.connectors import PostgresSQL
 from app.pkg.settings import settings
 
@@ -106,7 +107,13 @@ def cli():
     else:
         action = _apply
 
+    __containers__.set_environment(
+        connectors=[PostgresSQL], testing=args.testing, pkg_name=__name__
+    )
     run(action)
+
+    if args.testing:
+        run(action)
 
     if not (args.rollback or args.rollback_one) or not args:
         asyncio.run(inserter())

@@ -13,7 +13,7 @@ from app.pkg.models.exceptions import users
 
 
 @user_router.get(
-    "/{user_idL:uuid.UUID}}/",
+    "/{user_id:uuid}/",
     response_model=models.User,
     status_code=status.HTTP_200_OK,
     description="Get User",
