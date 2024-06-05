@@ -31,5 +31,6 @@ class UserService:
         Returns:
             User: Read user.
         """
+        print(f"query user_service {query}")
 
         return await self.repository.read(query=query)

@@ -28,13 +28,12 @@ class UserRepository(Repository):
             return await cur.fetchone()
 
     @collect_response
-    async def read(self, query) -> models.User:
+    async def read(self, query: models.ReadUserQuery) -> models.User:
         q = """
             select
                 id, email, telegram, first_name, last_name, password, is_activated
             from users
-            where email = %(email)s
-            and password = %(password)s
+            where id = %(id)s
         """
         async with get_connection() as cur:
             await cur.execute(q, query.to_dict())
