@@ -64,9 +64,9 @@ async def check(
         access_token_from_cookie: typing.Optional[str] = None,
         refresh_token_from_cookie: typing.Optional[str] = None,
         access_token_from_header: typing.Optional[str] = None,
-        jwt_methods: JWTService = Depends(Provide[Services.jwt_methods]),
+        jwt_service: JWTService = Depends(Provide[Services.jwt_service]),
 ) -> typing.Optional[models.JWTData]:
-    return await jwt_methods.get_jwt_data(
+    return await jwt_service.get_jwt_data(
         response=response,
         access_token_from_cookie=access_token_from_cookie,
         refresh_token_from_cookie=refresh_token_from_cookie,
