@@ -10,7 +10,9 @@ from app.pkg.models.base import BaseModel
 __all__ = [
     "User",
     "ReadUserQuery",
-    "CreateUserCommand",
+    "AuthorizeUserCommand",
+    "ReadUserEmailQuery",
+    "AuthorizeUser",
 
 ]
 
@@ -57,6 +59,7 @@ class UserFields:
 
 class _User(BaseUser):
     email: typing.Optional[EmailStr] = UserFields.email
+    password: str = UserFields.password
     telegram: typing.Optional[str] = UserFields.telegram
     first_name: typing.Optional[str] = UserFields.first_name
     last_name: typing.Optional[str] = UserFields.last_name
@@ -64,13 +67,23 @@ class _User(BaseUser):
 
 class User(_User):
     id: uuid.UUID = UserFields.id
+    is_activated: bool = UserFields.is_activated
+
+
+class ReadUserQuery(BaseUser):
+    id: uuid.UUID = UserFields.id
+
+
+class ReadUserEmailQuery(BaseUser):
+    email: typing.Optional[EmailStr] = UserFields.email
 
 
 # Commands.
-class CreateUserCommand(_User):
-    ...
+class AuthorizeUserCommand(BaseUser):
+    email: typing.Optional[EmailStr] = UserFields.email
+    password: str = UserFields.password
 
 
-# Queries.
-class ReadUserQuery(BaseUser):
-    id: uuid.UUID = UserFields.id
+class AuthorizeUser(_User):
+    access_token: str
+    refresh_token: str

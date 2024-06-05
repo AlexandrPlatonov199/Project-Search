@@ -12,28 +12,44 @@ __all__ = ["UserRepository"]
 
 class UserRepository(Repository):
     """User repository implementation."""
+
     @collect_response
-    async def create(self, cmd: models.CreateUserCommand) -> models.User:
+    async def create(self, cmd: models.AuthorizeUserCommand) -> models.User:
         q = """
             insert into users(
-                email, telegram, first_name, last_name
+                email, password
             ) values (
-                %(email)s, %(telegram)s, %(first_name)s, %(last_name)s
+                %(email)s, %(password)s
             )
-            returning id, email, telegram, first_name, last_name
+            returning id, email, password, first_name, last_name, telegram, is_activated
         """
         async with get_connection() as cur:
             await cur.execute(q, cmd.to_dict())
             return await cur.fetchone()
 
     @collect_response
-    async def read(self, query: models.ReadUserQuery) -> models.User:
+    async def read(self, query) -> models.User:
         q = """
             select
-                id, email, telegram, first_name, last_name
+                id, email, telegram, first_name, last_name, password, is_activated
             from users
-            where id = %(id)s
+            where email = %(email)s
+            and password = %(password)s
         """
         async with get_connection() as cur:
             await cur.execute(q, query.to_dict())
             return await cur.fetchone()
+
+    @collect_response
+    async def read_email_password(self, cmd: models.AuthorizeUserCommand) -> models.User:
+        q = """
+            select
+                id, email, telegram, first_name, last_name, password, is_activated
+            from users
+            where email = %(email)s
+            and password = %(password)s
+            """
+        async with get_connection() as cur:
+            await cur.execute(q, cmd.to_dict())
+            return await cur.fetchone()
+

@@ -11,6 +11,7 @@ from app.pkg.models.exceptions import users
 __all__ = [
     "__routes__",
     "user_router",
+    "auth_router",
 ]
 
 user_router = APIRouter(
@@ -21,9 +22,15 @@ user_router = APIRouter(
     },
 )
 
+auth_router = APIRouter(
+    prefix="/v1/auth",
+    tags=["Auth"]
+)
+
 
 __routes__ = Routes(
     routers=(
         user_router,
+        auth_router,
     ),
 )
