@@ -4,8 +4,8 @@ from typing import Callable
 
 import psycopg2
 
-from app.pkg.models.base import Model
 from app.pkg.logger import get_logger
+from app.pkg.models.base import Model
 from app.pkg.models.exceptions.association import __aiopg__, __constrains__
 from app.pkg.models.exceptions.repository import DriverError, EmptyResult
 from app.pkg.models.exceptions.users import UserNotFound

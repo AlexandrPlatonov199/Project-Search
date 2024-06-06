@@ -26,6 +26,9 @@ coverage = "^6.3.2"
 pytest-cov = "^4.0.0"
 pytest-repeat = "^0.9.1"
 
+[tool.poetry.group.formatters.dependencies]
+isort = "^5.10.1"
+black = "^22.1.0"
 
 
 [build-system]

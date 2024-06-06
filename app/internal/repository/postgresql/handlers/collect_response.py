@@ -6,9 +6,8 @@ from typing import List, Type, Union
 import pydantic
 from psycopg2.extras import RealDictRow
 
-from app.internal.repository.postgresql.handlers.handle_exception import (
-    handle_exception,
-)
+from app.internal.repository.postgresql.handlers.handle_exception import \
+    handle_exception
 from app.pkg.models.base import Model
 from app.pkg.models.exceptions.repository import EmptyResult
 

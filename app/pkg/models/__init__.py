@@ -1,19 +1,8 @@
 """Business models."""
 
-from app.pkg.models.app.user import (
-    User,
-    ReadUserQuery,
-    AuthorizeUserCommand,
-    ReadUserEmailQuery,
-    AuthorizeUser,
-)
 from app.pkg.models.app.jwt import JWTData
-from app.pkg.models.app.profile import (
-    CreateProfileCommand,
-    Profile,
-    ReadProfileQuery,
-    UpdateProfileCommand,
-    DeleteProfileCommand,
-)
-
-
+from app.pkg.models.app.profile import (CreateProfileCommand,
+                                        DeleteProfileCommand, Profile,
+                                        ReadProfileQuery, UpdateProfileCommand)
+from app.pkg.models.app.user import (AuthorizeUser, AuthorizeUserCommand,
+                                     ReadUserEmailQuery, ReadUserQuery, User)

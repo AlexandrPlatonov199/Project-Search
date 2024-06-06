@@ -4,10 +4,10 @@ from dependency_injector import containers, providers
 
 from app.internal.repository import Repositories, postgresql
 from app.internal.services.auth import AuthService
-from app.internal.services.profile import ProfileService
-from app.pkg.settings import settings
 from app.internal.services.jwt import JWTService
+from app.internal.services.profile import ProfileService
 from app.internal.services.users import UserService
+from app.pkg.settings import settings
 
 
 class Services(containers.DeclarativeContainer):

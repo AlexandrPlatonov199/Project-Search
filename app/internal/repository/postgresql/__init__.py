@@ -2,8 +2,8 @@
 
 from dependency_injector import containers, providers
 
-from app.internal.repository.postgresql.users import UserRepository
 from app.internal.repository.postgresql.profiles import ProfileRepository
+from app.internal.repository.postgresql.users import UserRepository
 
 
 class Repositories(containers.DeclarativeContainer):

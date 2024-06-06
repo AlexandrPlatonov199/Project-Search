@@ -2,9 +2,9 @@ import typing
 import uuid
 
 import fastapi
+from dependency_injector.wiring import Provide, inject
 from fastapi import Depends
 from starlette import status
-from dependency_injector.wiring import inject, Provide
 
 from app.internal.routes import profile_router
 from app.internal.services import ProfileService, Services

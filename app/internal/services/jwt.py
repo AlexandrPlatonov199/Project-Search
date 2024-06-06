@@ -1,6 +1,6 @@
 import datetime
-import uuid
 import typing
+import uuid
 
 import fastapi
 import jwt

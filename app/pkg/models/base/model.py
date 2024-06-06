@@ -9,9 +9,8 @@ from typing import Any, Dict, List, Tuple, TypeVar
 from uuid import UUID
 
 import pydantic
-from pydantic import UUID4
 from jsf import JSF
-
+from pydantic import UUID4
 
 __all__ = ["BaseModel", "Model"]
 

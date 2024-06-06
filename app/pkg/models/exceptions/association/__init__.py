@@ -2,4 +2,5 @@
 
 # ruff: noqa
 
-from app.pkg.models.exceptions.association.aiopg import __aiopg__, __constrains__
+from app.pkg.models.exceptions.association.aiopg import (__aiopg__,
+                                                         __constrains__)

@@ -5,7 +5,6 @@ from psycopg2 import errorcodes
 
 from app.pkg.models.exceptions import repository, users
 
-
 __all__ = ["__aiopg__", "__constrains__"]
 
 

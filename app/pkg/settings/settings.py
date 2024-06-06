@@ -1,18 +1,18 @@
 """Модуль для загрузки настроек из `.env` или, если сервер запущен с параметром `dev`, из `.env.dev`."""
 
-import urllib.parse
-import pathlib
 import datetime
-from typing import Optional
+import pathlib
+import urllib.parse
 from functools import lru_cache
+from typing import Optional
 
-from pydantic import PostgresDsn, root_validator, validator
 from dotenv import find_dotenv
+from pydantic import PostgresDsn, root_validator, validator
 from pydantic.env_settings import BaseSettings
 from pydantic.types import PositiveInt, SecretStr
 
-from app.pkg.utils.generate_rsa_keys import generate_rsa_keys
 from app.pkg.models.core.logger import LoggerLevel
+from app.pkg.utils.generate_rsa_keys import generate_rsa_keys
 
 __all__ = ["Settings", "get_settings"]
 

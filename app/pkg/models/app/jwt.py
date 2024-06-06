@@ -2,7 +2,6 @@ import uuid
 
 from pydantic import BaseModel
 
-
 __all__ = ["JWTData",]
 
 
