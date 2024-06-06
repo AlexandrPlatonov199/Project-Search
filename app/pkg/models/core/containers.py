@@ -204,9 +204,9 @@ class Containers:
 
     @staticmethod
     def __patch_container_configuration(
-            container: Container,
-            database_configuration_path: str,
-            prefix: str,
+        container: Container,
+        database_configuration_path: str,
+        prefix: str,
     ) -> Optional[_DIContainer]:
         """Patch container configuration.
 

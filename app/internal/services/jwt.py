@@ -26,13 +26,13 @@ class JWTService:
     """
 
     def __init__(
-            self,
-            access_token_public_key: str,
-            access_token_private_key: str,
-            refresh_token_public_key: str,
-            refresh_token_private_key: str,
-            access_token_expires: datetime.timedelta,
-            refresh_token_expires: datetime.timedelta,
+        self,
+        access_token_public_key: str,
+        access_token_private_key: str,
+        refresh_token_public_key: str,
+        refresh_token_private_key: str,
+        access_token_expires: datetime.timedelta,
+        refresh_token_expires: datetime.timedelta,
     ) -> None:
         self.access_token_public_key: str = access_token_public_key
         self.access_token_private_key: str = access_token_private_key
@@ -52,9 +52,9 @@ class JWTService:
         return datetime.datetime.utcnow() + self.refresh_token_expires
 
     def issue_access_token(
-            self,
-            user_id: uuid.UUID,
-            is_activated: bool,
+        self,
+        user_id: uuid.UUID,
+        is_activated: bool,
     ) -> str:
         """
         Генерирует access токен для пользователя.
@@ -77,8 +77,8 @@ class JWTService:
         )
 
     def decode_access_token(
-            self,
-            access_token: str,
+        self,
+        access_token: str,
     ) -> typing.Optional[models.JWTData]:
         """
         Декодирует access токен.
@@ -102,9 +102,9 @@ class JWTService:
             return None
 
     def issue_refresh_token(
-            self,
-            user_id: uuid.UUID,
-            is_activated: bool,
+        self,
+        user_id: uuid.UUID,
+        is_activated: bool,
     ) -> str:
         """
         Генерирует refresh токен для пользователя.
@@ -127,8 +127,8 @@ class JWTService:
         )
 
     def decode_refresh_token(
-            self,
-            refresh_token: str,
+        self,
+        refresh_token: str,
     ) -> typing.Optional[models.JWTData]:
         """
         Декодирует refresh токен.
@@ -151,11 +151,7 @@ class JWTService:
             return None
 
     def set_cookie(
-            self,
-            response: fastapi.Response,
-            name: str,
-            value: str,
-            expires: datetime
+        self, response: fastapi.Response, name: str, value: str, expires: datetime
     ) -> fastapi.Response:
         """
         Устанавливает cookie в ответе.
@@ -181,9 +177,7 @@ class JWTService:
         return response
 
     def generate_authorize_response(
-            self,
-            user,
-            response: fastapi.Response
+        self, user, response: fastapi.Response
     ) -> models.AuthorizeUser:
         """
         Генерирует ответ авторизации, устанавливая access и refresh токены в cookie.
@@ -195,20 +189,24 @@ class JWTService:
         Returns:
             models.AuthorizeUser: Объект с данными авторизации пользователя.
         """
-        access_token = self.issue_access_token(user.id, is_activated=self.activate(user.is_activated))
-        refresh_token = self.issue_refresh_token(user.id, is_activated=self.activate(user.is_activated))
+        access_token = self.issue_access_token(
+            user.id, is_activated=self.activate(user.is_activated)
+        )
+        refresh_token = self.issue_refresh_token(
+            user.id, is_activated=self.activate(user.is_activated)
+        )
 
         self.set_cookie(
             response=response,
             name="access_token",
             value=access_token,
-            expires=self.access_token_expires_utc
+            expires=self.access_token_expires_utc,
         )
         self.set_cookie(
             response=response,
             name="refresh_token",
             value=refresh_token,
-            expires=self.refresh_token_expires_utc
+            expires=self.refresh_token_expires_utc,
         )
 
         return models.AuthorizeUser(
@@ -234,11 +232,17 @@ class JWTService:
         return is_activated
 
     async def get_jwt_data(
-            self,
-            response: fastapi.Response,
-            access_token_from_cookie: typing.Optional[str] = fastapi.Cookie(None, alias="access_token"),
-            refresh_token_from_cookie: typing.Optional[str] = fastapi.Cookie(None, alias="refresh_token"),
-            access_token_from_header: typing.Optional[str] = fastapi.Header(None, alias="Authorization"),
+        self,
+        response: fastapi.Response,
+        access_token_from_cookie: typing.Optional[str] = fastapi.Cookie(
+            None, alias="access_token"
+        ),
+        refresh_token_from_cookie: typing.Optional[str] = fastapi.Cookie(
+            None, alias="refresh_token"
+        ),
+        access_token_from_header: typing.Optional[str] = fastapi.Header(
+            None, alias="Authorization"
+        ),
     ) -> typing.Optional[models.JWTData]:
         """
         Извлекает данные JWT из токенов в заголовках или cookie.
@@ -254,7 +258,10 @@ class JWTService:
         """
         access_token, refresh_token = None, None
 
-        if access_token_from_header is not None and access_token_from_header.startswith("Bearer "):
+        if (
+            access_token_from_header is not None
+            and access_token_from_header.startswith("Bearer ")
+        ):
             access_token = access_token_from_header.lstrip("Bearer").strip()
         if access_token is None:
             access_token = access_token_from_cookie
@@ -283,12 +290,12 @@ class JWTService:
                 response=response,
                 name="access_token",
                 value=new_access_token,
-                expires=self.access_token_expires_utc
+                expires=self.access_token_expires_utc,
             )
             self.set_cookie(
                 response=response,
                 name="refresh_token",
                 value=new_refresh_token,
-                expires=self.refresh_token_expires_utc
+                expires=self.refresh_token_expires_utc,
             )
         return jwt_data

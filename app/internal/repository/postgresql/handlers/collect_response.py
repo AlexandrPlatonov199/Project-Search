@@ -6,8 +6,9 @@ from typing import List, Type, Union
 import pydantic
 from psycopg2.extras import RealDictRow
 
-from app.internal.repository.postgresql.handlers.handle_exception import \
-    handle_exception
+from app.internal.repository.postgresql.handlers.handle_exception import (
+    handle_exception,
+)
 from app.pkg.models.base import Model
 from app.pkg.models.exceptions.repository import EmptyResult
 
@@ -56,7 +57,7 @@ def collect_response(fn):
 
         return pydantic.parse_obj_as(
             (ann := fn.__annotations__["return"]),
-            await __convert_response(response=response, annotations=str(ann))
+            await __convert_response(response=response, annotations=str(ann)),
         )
 
     return inner

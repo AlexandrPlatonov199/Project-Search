@@ -13,7 +13,6 @@ __all__ = [
     "AuthorizeUserCommand",
     "ReadUserEmailQuery",
     "AuthorizeUser",
-
 ]
 
 
@@ -31,7 +30,7 @@ class UserFields:
     password: str = Field(
         description="Пароль пользователя",
         example="P@ssw0rd!",
-        regex=r"^[\w\(\)\[\]\{\}\^\$\+\*@#%!&]{8,}$"
+        regex=r"^[\w\(\)\[\]\{\}\^\$\+\*@#%!&]{8,}$",
     )
     is_activated: bool = Field(description="Is activated.", example=False)
 

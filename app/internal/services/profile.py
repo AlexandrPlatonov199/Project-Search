@@ -33,9 +33,15 @@ class ProfileService:
         self,
         response: fastapi.Response,
         cmd: models.CreateProfileCommand,
-        access_token_from_cookie: typing.Optional[str] = fastapi.Cookie(None, alias="access_token"),
-        refresh_token_from_cookie: typing.Optional[str] = fastapi.Cookie(None, alias="refresh_token"),
-        access_token_from_header: typing.Optional[str] = fastapi.Header(None, alias="Authorization"),
+        access_token_from_cookie: typing.Optional[str] = fastapi.Cookie(
+            None, alias="access_token"
+        ),
+        refresh_token_from_cookie: typing.Optional[str] = fastapi.Cookie(
+            None, alias="refresh_token"
+        ),
+        access_token_from_header: typing.Optional[str] = fastapi.Header(
+            None, alias="Authorization"
+        ),
     ) -> models.Profile:
         """
         Создает профиль пользователя.
@@ -57,19 +63,27 @@ class ProfileService:
             access_token_from_header=access_token_from_header,
         )
 
-        #TODO Добавить кастомные ошибки
+        # TODO Добавить кастомные ошибки
         if user is not None and user.user_id == cmd.user_id:
             return await self.repository.create(cmd=cmd)
         else:
-            raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Unauthorized")
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED, detail="Unauthorized"
+            )
 
     async def read_profile(
         self,
         response: fastapi.Response,
         query: models.ReadProfileQuery,
-        access_token_from_cookie: typing.Optional[str] = fastapi.Cookie(None, alias="access_token"),
-        refresh_token_from_cookie: typing.Optional[str] = fastapi.Cookie(None, alias="refresh_token"),
-        access_token_from_header: typing.Optional[str] = fastapi.Header(None, alias="Authorization"),
+        access_token_from_cookie: typing.Optional[str] = fastapi.Cookie(
+            None, alias="access_token"
+        ),
+        refresh_token_from_cookie: typing.Optional[str] = fastapi.Cookie(
+            None, alias="refresh_token"
+        ),
+        access_token_from_header: typing.Optional[str] = fastapi.Header(
+            None, alias="Authorization"
+        ),
     ):
         """
         Читает профиль пользователя.
@@ -94,15 +108,23 @@ class ProfileService:
         if user is not None and user.user_id == query.user_id:
             return await self.repository.read(query=query)
         else:
-            raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Unauthorized")
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED, detail="Unauthorized"
+            )
 
     async def update_profile(
-            self,
-            response: fastapi.Response,
-            cmd: models.UpdateProfileCommand,
-            access_token_from_cookie: typing.Optional[str] = fastapi.Cookie(None, alias="access_token"),
-            refresh_token_from_cookie: typing.Optional[str] = fastapi.Cookie(None, alias="refresh_token"),
-            access_token_from_header: typing.Optional[str] = fastapi.Header(None, alias="Authorization"),
+        self,
+        response: fastapi.Response,
+        cmd: models.UpdateProfileCommand,
+        access_token_from_cookie: typing.Optional[str] = fastapi.Cookie(
+            None, alias="access_token"
+        ),
+        refresh_token_from_cookie: typing.Optional[str] = fastapi.Cookie(
+            None, alias="refresh_token"
+        ),
+        access_token_from_header: typing.Optional[str] = fastapi.Header(
+            None, alias="Authorization"
+        ),
     ):
         user = await self.jwt_service.get_jwt_data(
             response=response,
@@ -114,15 +136,23 @@ class ProfileService:
         if user is not None and user.user_id == cmd.user_id:
             return await self.repository.update(cmd=cmd)
         else:
-            raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Unauthorized")
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED, detail="Unauthorized"
+            )
 
     async def delete_profile(
-            self,
-            response: fastapi.Response,
-            cmd: models.DeleteProfileCommand,
-            access_token_from_cookie: typing.Optional[str] = fastapi.Cookie(None, alias="access_token"),
-            refresh_token_from_cookie: typing.Optional[str] = fastapi.Cookie(None, alias="refresh_token"),
-            access_token_from_header: typing.Optional[str] = fastapi.Header(None, alias="Authorization"),
+        self,
+        response: fastapi.Response,
+        cmd: models.DeleteProfileCommand,
+        access_token_from_cookie: typing.Optional[str] = fastapi.Cookie(
+            None, alias="access_token"
+        ),
+        refresh_token_from_cookie: typing.Optional[str] = fastapi.Cookie(
+            None, alias="refresh_token"
+        ),
+        access_token_from_header: typing.Optional[str] = fastapi.Header(
+            None, alias="Authorization"
+        ),
     ):
         user = await self.jwt_service.get_jwt_data(
             response=response,
@@ -134,7 +164,9 @@ class ProfileService:
         if user is not None and user.user_id == cmd.user_id:
             return await self.repository.delete(cmd=cmd)
         else:
-            raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Unauthorized")
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED, detail="Unauthorized"
+            )
 
     async def read_all_profile(self) -> typing.List[models.Profile]:
         return await self.repository.read_all()

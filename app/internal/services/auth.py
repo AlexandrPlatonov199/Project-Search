@@ -18,17 +18,15 @@ class AuthService:
     user_repository: users.UserRepository
 
     def __init__(
-            self,
-            user_repository,
-            jwt_service,
+        self,
+        user_repository,
+        jwt_service,
     ):
         self.user_repository = user_repository
         self.jwt_service = jwt_service
 
     async def sign_up_user(
-            self,
-            response: fastapi.Response,
-            cmd: models.AuthorizeUserCommand
+        self, response: fastapi.Response, cmd: models.AuthorizeUserCommand
     ) -> models.AuthorizeUser:
         """
         Регистрирует нового пользователя и генерирует авторизационный ответ с JWT токенами.
@@ -47,9 +45,7 @@ class AuthService:
         )
 
     async def sign_in_user(
-            self,
-            response: fastapi.Response,
-            cmd: models.AuthorizeUserCommand
+        self, response: fastapi.Response, cmd: models.AuthorizeUserCommand
     ) -> models.AuthorizeUser:
         """
         Авторизует пользователя и генерирует авторизационный ответ с JWT токенами.

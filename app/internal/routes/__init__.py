@@ -23,15 +23,9 @@ user_router = APIRouter(
     },
 )
 
-auth_router = APIRouter(
-    prefix="/v1/auth",
-    tags=["Auth"]
-)
+auth_router = APIRouter(prefix="/v1/auth", tags=["Auth"])
 
-profile_router = APIRouter(
-    prefix="/v1/profile",
-    tags=["Profile"]
-)
+profile_router = APIRouter(prefix="/v1/profile", tags=["Profile"])
 
 __routes__ = Routes(
     routers=(

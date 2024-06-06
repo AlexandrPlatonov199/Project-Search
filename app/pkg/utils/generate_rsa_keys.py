@@ -1,9 +1,7 @@
 """Модуль для генерации пары ключей RSA."""
 
-from cryptography.hazmat.backends import \
-    default_backend as crypto_default_backend
-from cryptography.hazmat.primitives import \
-    serialization as crypto_serialization
+from cryptography.hazmat.backends import default_backend as crypto_default_backend
+from cryptography.hazmat.primitives import serialization as crypto_serialization
 from cryptography.hazmat.primitives.asymmetric import rsa
 
 
@@ -32,4 +30,3 @@ def generate_rsa_keys():
     ).decode()
 
     return public_key, private_key
-

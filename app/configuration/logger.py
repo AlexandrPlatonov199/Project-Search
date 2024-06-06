@@ -38,4 +38,3 @@ class EndpointFilter(logging.Filter):
         """
 
         return record.getMessage().find(self.endpoint) == -1
-

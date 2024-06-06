@@ -12,7 +12,6 @@ __all__ = [
     "ReadProfileQuery",
     "UpdateProfileCommand",
     "DeleteProfileCommand",
-
 ]
 
 
@@ -43,8 +42,8 @@ class ProfileField:
         description="Биография пользователя.",
         default=None,
         example="Легко приспосабливаюсь к новым условиям и требованиям,"
-                " что помогает мне быстро реагировать на изменения в"
-                " процессе разработки."
+        " что помогает мне быстро реагировать на изменения в"
+        " процессе разработки.",
     )
 
 
@@ -74,4 +73,3 @@ class DeleteProfileCommand(BaseModel):
 
 class ReadProfileQuery(BaseModel):
     user_id: uuid.UUID = ProfileField.user_id
-

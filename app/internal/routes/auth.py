@@ -19,9 +19,9 @@ from app.pkg import models
 )
 @inject
 async def sign_up(
-        response: fastapi.Response,
-        cmd: models.AuthorizeUserCommand,
-        auth_service: AuthService = Depends(Provide[Services.auth_service]),
+    response: fastapi.Response,
+    cmd: models.AuthorizeUserCommand,
+    auth_service: AuthService = Depends(Provide[Services.auth_service]),
 ):
     return await auth_service.sign_up_user(
         response,
@@ -29,15 +29,12 @@ async def sign_up(
     )
 
 
-@auth_router.post(
-    "/sign_in/",
-    status_code=status.HTTP_200_OK
-)
+@auth_router.post("/sign_in/", status_code=status.HTTP_200_OK)
 @inject
 async def sign_in(
-        response: fastapi.Response,
-        cmd: models.AuthorizeUserCommand,
-        auth_service: AuthService = Depends(Provide[Services.auth_service]),
+    response: fastapi.Response,
+    cmd: models.AuthorizeUserCommand,
+    auth_service: AuthService = Depends(Provide[Services.auth_service]),
 ):
 
     return await auth_service.sign_in_user(
@@ -54,17 +51,20 @@ async def logout(response: fastapi.Response):
     response.delete_cookie("refresh_token")
 
 
-@auth_router.get(
-    "/check/",
-    status_code=status.HTTP_200_OK
-)
+@auth_router.get("/check/", status_code=status.HTTP_200_OK)
 @inject
 async def check(
-        response: fastapi.Response,
-        access_token_from_cookie: typing.Optional[str] = fastapi.Cookie(None, alias="access_token"),
-        refresh_token_from_cookie: typing.Optional[str] = fastapi.Cookie(None, alias="refresh_token"),
-        access_token_from_header: typing.Optional[str] = fastapi.Header(None, alias="Authorization"),
-        jwt_service: JWTService = Depends(Provide[Services.jwt_service])
+    response: fastapi.Response,
+    access_token_from_cookie: typing.Optional[str] = fastapi.Cookie(
+        None, alias="access_token"
+    ),
+    refresh_token_from_cookie: typing.Optional[str] = fastapi.Cookie(
+        None, alias="refresh_token"
+    ),
+    access_token_from_header: typing.Optional[str] = fastapi.Header(
+        None, alias="Authorization"
+    ),
+    jwt_service: JWTService = Depends(Provide[Services.jwt_service]),
 ):
     return await jwt_service.get_jwt_data(
         response=response,
@@ -72,4 +72,3 @@ async def check(
         refresh_token_from_cookie=refresh_token_from_cookie,
         access_token_from_header=access_token_from_header,
     )
-

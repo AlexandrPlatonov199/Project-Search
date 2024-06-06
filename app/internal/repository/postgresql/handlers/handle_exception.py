@@ -46,6 +46,7 @@ def handle_exception(func: Callable[..., Model]):
             of the database set.
         DriverError: Any error during execution query on a database.
     """
+
     async def wrapper(*args: object, **kwargs: object) -> Model:
         """Inner function. Catching Postgresql Query Exceptions.
 
@@ -67,7 +68,9 @@ def handle_exception(func: Callable[..., Model]):
         try:
             return await func(*args, **kwargs)
         except psycopg2.Error as error:
-            logger.error("An error occurred while executing PostgreSQL query: %s", error)
+            logger.error(
+                "An error occurred while executing PostgreSQL query: %s", error
+            )
             if exc := __constrains__.get(error.diag.constraint_name):
                 raise exc from error
 

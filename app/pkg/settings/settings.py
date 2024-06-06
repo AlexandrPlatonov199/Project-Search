@@ -35,6 +35,7 @@ class _Settings(BaseSettings):
         #: str: Разделитель для вложенных переменных среды.
         env_nested_delimiter = "__"
 
+
 class Postgresql(_Settings):
     """Настройки для работы с PostgreSQL."""
 
@@ -61,6 +62,7 @@ class Postgresql(_Settings):
         )
         return values
 
+
 class Logging(_Settings):
     """Настройки логирования."""
 
@@ -75,6 +77,7 @@ class Logging(_Settings):
             v.mkdir(exist_ok=True, parents=True)
         return v
 
+
 class APIServer(_Settings):
     """Настройки API."""
 
@@ -82,6 +85,7 @@ class APIServer(_Settings):
     HOST: str = "localhost"
     PORT: PositiveInt = 5000
     LOGGER: Logging
+
 
 class Jwt(_Settings):
     """Настройки JWT."""
@@ -106,12 +110,14 @@ class Jwt(_Settings):
         values["REFRESH_TOKEN_PUBLIC_KEY"] = public_key_refresh
         return values
 
+
 class Settings(_Settings):
     """Настройки сервера."""
 
     API: APIServer
     POSTGRES: Postgresql
     JWT: Jwt
+
 
 @lru_cache
 def get_settings(env_file: str = ".env") -> Settings:

@@ -104,10 +104,7 @@ class BaseModel(pydantic.BaseModel):
         elif isinstance(v, pydantic.SecretStr):
             return v.get_secret_value() if show_secrets else str(v)
 
-    def delete_attribute(
-            self,
-            attr: str
-    ) -> BaseModel:
+    def delete_attribute(self, attr: str) -> BaseModel:
 
         delattr(self, attr)
         return self

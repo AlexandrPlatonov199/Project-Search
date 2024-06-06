@@ -10,9 +10,8 @@ class UserService:
     """Service for managing user."""
 
     def __init__(
-            self,
-            user_repository: BaseRepository,
-
+        self,
+        user_repository: BaseRepository,
     ):
         """
         Initialize UserService.

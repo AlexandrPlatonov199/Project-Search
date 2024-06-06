@@ -1,8 +1,9 @@
 from typing import List
 
 from app.internal.repository.postgresql.connection import get_connection
-from app.internal.repository.postgresql.handlers.collect_response import \
-    collect_response
+from app.internal.repository.postgresql.handlers.collect_response import (
+    collect_response,
+)
 from app.internal.repository.repository import Repository
 from app.pkg import models
 
@@ -10,7 +11,6 @@ __all__ = ["ProfileRepository"]
 
 
 class ProfileRepository(Repository):
-
     @collect_response
     async def create(self, cmd: models.CreateProfileCommand) -> models.Profile:
         q = """

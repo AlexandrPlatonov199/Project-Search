@@ -1,8 +1,9 @@
 """Repository for user."""
 
 from app.internal.repository.postgresql.connection import get_connection
-from app.internal.repository.postgresql.handlers.collect_response import \
-    collect_response
+from app.internal.repository.postgresql.handlers.collect_response import (
+    collect_response,
+)
 from app.internal.repository.repository import Repository
 from app.pkg import models
 
@@ -39,7 +40,9 @@ class UserRepository(Repository):
             return await cur.fetchone()
 
     @collect_response
-    async def read_email_password(self, cmd: models.AuthorizeUserCommand) -> models.User:
+    async def read_email_password(
+        self, cmd: models.AuthorizeUserCommand
+    ) -> models.User:
         q = """
             select
                 id, email, password, is_activated
@@ -50,4 +53,3 @@ class UserRepository(Repository):
         async with get_connection() as cur:
             await cur.execute(q, cmd.to_dict())
             return await cur.fetchone()
-

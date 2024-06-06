@@ -12,6 +12,3 @@ class Repositories(containers.DeclarativeContainer):
     user_repository = providers.Factory(UserRepository)
 
     profile_repository = providers.Factory(ProfileRepository)
-
-
-

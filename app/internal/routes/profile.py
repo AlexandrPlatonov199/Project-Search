@@ -12,20 +12,22 @@ from app.pkg import models
 
 
 @profile_router.post(
-    "/",
-    status_code=status.HTTP_201_CREATED,
-    description="Create profile for user."
-
+    "/", status_code=status.HTTP_201_CREATED, description="Create profile for user."
 )
 @inject
 async def create_profile(
-        response: fastapi.Response,
-        cmd: models.CreateProfileCommand,
-        profile_service: ProfileService = Depends(Provide[Services.profile_service]),
-        access_token_from_cookie: typing.Optional[str] = fastapi.Cookie(None, alias="access_token"),
-        refresh_token_from_cookie: typing.Optional[str] = fastapi.Cookie(None, alias="refresh_token"),
-        access_token_from_header: typing.Optional[str] = fastapi.Header(None, alias="Authorization"),
-
+    response: fastapi.Response,
+    cmd: models.CreateProfileCommand,
+    profile_service: ProfileService = Depends(Provide[Services.profile_service]),
+    access_token_from_cookie: typing.Optional[str] = fastapi.Cookie(
+        None, alias="access_token"
+    ),
+    refresh_token_from_cookie: typing.Optional[str] = fastapi.Cookie(
+        None, alias="refresh_token"
+    ),
+    access_token_from_header: typing.Optional[str] = fastapi.Header(
+        None, alias="Authorization"
+    ),
 ):
     return await profile_service.create_profile(
         response=response,
@@ -33,7 +35,6 @@ async def create_profile(
         access_token_from_cookie=access_token_from_cookie,
         refresh_token_from_cookie=refresh_token_from_cookie,
         access_token_from_header=access_token_from_header,
-
     )
 
 
@@ -44,13 +45,18 @@ async def create_profile(
 )
 @inject
 async def read_profile(
-        response: fastapi.Response,
-        user_id: uuid.UUID,
-        profile_service: ProfileService = Depends(Provide[Services.profile_service]),
-        access_token_from_cookie: typing.Optional[str] = fastapi.Cookie(None, alias="access_token"),
-        refresh_token_from_cookie: typing.Optional[str] = fastapi.Cookie(None, alias="refresh_token"),
-        access_token_from_header: typing.Optional[str] = fastapi.Header(None, alias="Authorization"),
-
+    response: fastapi.Response,
+    user_id: uuid.UUID,
+    profile_service: ProfileService = Depends(Provide[Services.profile_service]),
+    access_token_from_cookie: typing.Optional[str] = fastapi.Cookie(
+        None, alias="access_token"
+    ),
+    refresh_token_from_cookie: typing.Optional[str] = fastapi.Cookie(
+        None, alias="refresh_token"
+    ),
+    access_token_from_header: typing.Optional[str] = fastapi.Header(
+        None, alias="Authorization"
+    ),
 ):
     return await profile_service.read_profile(
         query=models.ReadProfileQuery(user_id=user_id),
@@ -62,18 +68,22 @@ async def read_profile(
 
 
 @profile_router.put(
-    "/",
-    status_code=status.HTTP_200_OK,
-    description="Update profile user."
+    "/", status_code=status.HTTP_200_OK, description="Update profile user."
 )
 @inject
 async def update_profile(
-        response: fastapi.Response,
-        cmd: models.UpdateProfileCommand,
-        profile_service: ProfileService = Depends(Provide[Services.profile_service]),
-        access_token_from_cookie: typing.Optional[str] = fastapi.Cookie(None, alias="access_token"),
-        refresh_token_from_cookie: typing.Optional[str] = fastapi.Cookie(None, alias="refresh_token"),
-        access_token_from_header: typing.Optional[str] = fastapi.Header(None, alias="Authorization"),
+    response: fastapi.Response,
+    cmd: models.UpdateProfileCommand,
+    profile_service: ProfileService = Depends(Provide[Services.profile_service]),
+    access_token_from_cookie: typing.Optional[str] = fastapi.Cookie(
+        None, alias="access_token"
+    ),
+    refresh_token_from_cookie: typing.Optional[str] = fastapi.Cookie(
+        None, alias="refresh_token"
+    ),
+    access_token_from_header: typing.Optional[str] = fastapi.Header(
+        None, alias="Authorization"
+    ),
 ):
     return await profile_service.update_profile(
         cmd=cmd,
@@ -85,18 +95,22 @@ async def update_profile(
 
 
 @profile_router.delete(
-    "/{user_id:uuid}/",
-    status_code=status.HTTP_200_OK,
-    description="Delete profile."
+    "/{user_id:uuid}/", status_code=status.HTTP_200_OK, description="Delete profile."
 )
 @inject
 async def delete_profile(
-        response: fastapi.Response,
-        user_id: uuid.UUID,
-        profile_service: ProfileService = Depends(Provide[Services.profile_service]),
-        access_token_from_cookie: typing.Optional[str] = fastapi.Cookie(None, alias="access_token"),
-        refresh_token_from_cookie: typing.Optional[str] = fastapi.Cookie(None, alias="refresh_token"),
-        access_token_from_header: typing.Optional[str] = fastapi.Header(None, alias="Authorization"),
+    response: fastapi.Response,
+    user_id: uuid.UUID,
+    profile_service: ProfileService = Depends(Provide[Services.profile_service]),
+    access_token_from_cookie: typing.Optional[str] = fastapi.Cookie(
+        None, alias="access_token"
+    ),
+    refresh_token_from_cookie: typing.Optional[str] = fastapi.Cookie(
+        None, alias="refresh_token"
+    ),
+    access_token_from_header: typing.Optional[str] = fastapi.Header(
+        None, alias="Authorization"
+    ),
 ):
     return await profile_service.delete_profile(
         cmd=models.DeleteProfileCommand(user_id=user_id),
@@ -114,6 +128,6 @@ async def delete_profile(
 )
 @inject
 async def read_all(
-        profile_service: ProfileService = Depends(Provide[Services.profile_service]),
+    profile_service: ProfileService = Depends(Provide[Services.profile_service]),
 ):
     return await profile_service.read_all_profile()
