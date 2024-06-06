@@ -24,45 +24,21 @@ class BaseUser(BaseModel):
 class UserFields:
     id: uuid.UUID = Field()
     email: typing.Optional[EmailStr] = Field(
-        description="User email.",
+        description="Емаил пользователя.",
         example="test@example.ru",
         default=None,
     )
-    telegram: typing.Optional[str] = Field(
-        description="Telegram user.",
-        example="@tester1337",
-        default=None,
-        regex=r"^@[\w\d_]{5,}$",
-    )
-    first_name: typing.Optional[str] = Field(
-        description="First name user.",
-        example="Alexandr",
-        default=None,
-    )
     password: str = Field(
-        description="Password user",
+        description="Пароль пользователя",
         example="P@ssw0rd!",
         regex=r"^[\w\(\)\[\]\{\}\^\$\+\*@#%!&]{8,}$"
     )
-    last_name: typing.Optional[str] = Field(
-        description="Last name user.",
-        example="Popov",
-        default=None,
-    )
     is_activated: bool = Field(description="Is activated.", example=False)
-    has_avatar: bool = Field(description="Has avatar", example=False)
-    about: typing.Optional[str] = Field(
-        description="About user.",
-        default=None,
-    )
 
 
 class _User(BaseUser):
     email: typing.Optional[EmailStr] = UserFields.email
     password: str = UserFields.password
-    telegram: typing.Optional[str] = UserFields.telegram
-    first_name: typing.Optional[str] = UserFields.first_name
-    last_name: typing.Optional[str] = UserFields.last_name
 
 
 class User(_User):
