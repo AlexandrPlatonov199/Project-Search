@@ -136,3 +136,5 @@ class ProfileService:
         else:
             raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Unauthorized")
 
+    async def read_all_profile(self) -> typing.List[models.Profile]:
+        return await self.repository.read_all()

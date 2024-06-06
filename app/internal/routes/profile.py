@@ -105,3 +105,15 @@ async def delete_profile(
         refresh_token_from_cookie=refresh_token_from_cookie,
         access_token_from_header=access_token_from_header,
     )
+
+
+@profile_router.get(
+    "/",
+    status_code=status.HTTP_200_OK,
+    description="Get all profile",
+)
+@inject
+async def read_all(
+        profile_service: ProfileService = Depends(Provide[Services.profile_service]),
+):
+    return await profile_service.read_all_profile()

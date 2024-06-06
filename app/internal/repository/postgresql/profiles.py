@@ -1,3 +1,5 @@
+from typing import List
+
 from app.internal.repository.postgresql.connection import get_connection
 from app.internal.repository.postgresql.handlers.collect_response import (
     collect_response,
@@ -35,6 +37,17 @@ class ProfileRepository(Repository):
         async with get_connection() as cur:
             await cur.execute(q, query.to_dict())
             return await cur.fetchone()
+
+    @collect_response
+    async def read_all(self) -> List[models.Profile]:
+        q = """
+             select
+                id , user_id, first_name, last_name, telegram, bio
+            from profiles
+            """
+        async with get_connection() as cur:
+            await cur.execute(q)
+            return await cur.fetchall()
 
     @collect_response
     async def update(self, cmd: models.UpdateProfileCommand) -> models.Profile:
