@@ -115,3 +115,24 @@ class ProfileService:
             return await self.repository.update(cmd=cmd)
         else:
             raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Unauthorized")
+
+    async def delete_profile(
+            self,
+            response: fastapi.Response,
+            cmd: models.DeleteProfileCommand,
+            access_token_from_cookie: typing.Optional[str] = fastapi.Cookie(None, alias="access_token"),
+            refresh_token_from_cookie: typing.Optional[str] = fastapi.Cookie(None, alias="refresh_token"),
+            access_token_from_header: typing.Optional[str] = fastapi.Header(None, alias="Authorization"),
+    ):
+        user = await self.jwt_service.get_jwt_data(
+            response=response,
+            access_token_from_cookie=access_token_from_cookie,
+            refresh_token_from_cookie=refresh_token_from_cookie,
+            access_token_from_header=access_token_from_header,
+        )
+
+        if user is not None and user.user_id == cmd.user_id:
+            return await self.repository.delete(cmd=cmd)
+        else:
+            raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Unauthorized")
+

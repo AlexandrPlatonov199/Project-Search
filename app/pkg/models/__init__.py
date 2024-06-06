@@ -13,6 +13,7 @@ from app.pkg.models.app.profile import (
     Profile,
     ReadProfileQuery,
     UpdateProfileCommand,
+    DeleteProfileCommand,
 )
 
 

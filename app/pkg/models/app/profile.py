@@ -11,6 +11,7 @@ __all__ = [
     "Profile",
     "ReadProfileQuery",
     "UpdateProfileCommand",
+    "DeleteProfileCommand",
 
 ]
 
@@ -65,6 +66,10 @@ class CreateProfileCommand(_Profile):
 
 class UpdateProfileCommand(_Profile):
     ...
+
+
+class DeleteProfileCommand(BaseModel):
+    user_id: uuid.UUID = ProfileField.user_id
 
 
 class ReadProfileQuery(BaseModel):

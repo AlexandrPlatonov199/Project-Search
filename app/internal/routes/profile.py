@@ -82,3 +82,26 @@ async def update_profile(
         refresh_token_from_cookie=refresh_token_from_cookie,
         access_token_from_header=access_token_from_header,
     )
+
+
+@profile_router.delete(
+    "/{user_id:uuid}/",
+    status_code=status.HTTP_200_OK,
+    description="Delete profile."
+)
+@inject
+async def delete_profile(
+        response: fastapi.Response,
+        user_id: uuid.UUID,
+        profile_service: ProfileService = Depends(Provide[Services.profile_service]),
+        access_token_from_cookie: typing.Optional[str] = fastapi.Cookie(None, alias="access_token"),
+        refresh_token_from_cookie: typing.Optional[str] = fastapi.Cookie(None, alias="refresh_token"),
+        access_token_from_header: typing.Optional[str] = fastapi.Header(None, alias="Authorization"),
+):
+    return await profile_service.delete_profile(
+        cmd=models.DeleteProfileCommand(user_id=user_id),
+        response=response,
+        access_token_from_cookie=access_token_from_cookie,
+        refresh_token_from_cookie=refresh_token_from_cookie,
+        access_token_from_header=access_token_from_header,
+    )

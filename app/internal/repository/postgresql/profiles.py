@@ -50,3 +50,14 @@ class ProfileRepository(Repository):
         async with get_connection() as cur:
             await cur.execute(q, cmd.to_dict())
             return await cur.fetchone()
+
+    @collect_response
+    async def delete(self, cmd: models.DeleteProfileCommand) -> models.Profile:
+        q = """
+            delete from profiles
+            where user_id = %(user_id)s
+            returning id, user_id, first_name, last_name, telegram, bio
+            """
+        async with get_connection() as cur:
+            await cur.execute(q, cmd.to_dict())
+            return await cur.fetchone()
