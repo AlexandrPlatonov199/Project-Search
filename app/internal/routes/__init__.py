@@ -12,6 +12,7 @@ __all__ = [
     "__routes__",
     "user_router",
     "auth_router",
+    "profile_router",
 ]
 
 user_router = APIRouter(
@@ -27,10 +28,15 @@ auth_router = APIRouter(
     tags=["Auth"]
 )
 
+profile_router = APIRouter(
+    prefix="/v1/profile",
+    tags=["Profile"]
+)
 
 __routes__ = Routes(
     routers=(
         user_router,
         auth_router,
+        profile_router,
     ),
 )

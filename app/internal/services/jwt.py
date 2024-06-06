@@ -214,9 +214,6 @@ class JWTService:
         return models.AuthorizeUser(
             email=user.email,
             password=user.password,
-            telegram=user.telegram,
-            first_name=user.first_name,
-            last_name=user.last_name,
             access_token=access_token,
             refresh_token=refresh_token,
         )

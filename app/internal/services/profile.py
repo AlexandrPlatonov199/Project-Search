@@ -1,6 +1,8 @@
 from app.internal.repository.repository import BaseRepository
 from app.pkg import models
 
+__all__ = ["ProfileService"]
+
 
 class ProfileService:
     def __init__(
