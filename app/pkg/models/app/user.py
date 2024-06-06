@@ -39,11 +39,11 @@ class UserFields:
 class _User(BaseUser):
     email: typing.Optional[EmailStr] = UserFields.email
     password: str = UserFields.password
+    is_activated: bool = UserFields.is_activated
 
 
 class User(_User):
     id: uuid.UUID = UserFields.id
-    is_activated: bool = UserFields.is_activated
 
 
 class ReadUserQuery(BaseUser):

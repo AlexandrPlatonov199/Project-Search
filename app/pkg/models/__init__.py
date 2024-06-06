@@ -8,6 +8,6 @@ from app.pkg.models.app.user import (
     AuthorizeUser,
 )
 from app.pkg.models.app.jwt import JWTData
-from app.pkg.models.app.profile import CreateProfileCommand, Profile
+from app.pkg.models.app.profile import CreateProfileCommand, Profile, ReadProfileQuery
 
 

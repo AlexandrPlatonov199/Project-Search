@@ -21,7 +21,7 @@ class UserRepository(Repository):
             ) values (
                 %(email)s, %(password)s
             )
-            returning id, email, password, first_name, last_name, telegram, is_activated
+            returning id, email, password, is_activated
         """
         async with get_connection() as cur:
             await cur.execute(q, cmd.to_dict())
@@ -31,7 +31,7 @@ class UserRepository(Repository):
     async def read(self, query: models.ReadUserQuery) -> models.User:
         q = """
             select
-                id, email, telegram, first_name, last_name, password, is_activated
+                id, email, password, is_activated
             from users
             where id = %(id)s
         """
@@ -43,7 +43,7 @@ class UserRepository(Repository):
     async def read_email_password(self, cmd: models.AuthorizeUserCommand) -> models.User:
         q = """
             select
-                id, email, telegram, first_name, last_name, password, is_activated
+                id, email, password, is_activated
             from users
             where email = %(email)s
             and password = %(password)s

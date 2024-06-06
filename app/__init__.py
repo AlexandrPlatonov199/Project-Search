@@ -17,6 +17,8 @@ def create_app() -> FastAPI:
     __containers__.wire_packages(app=app)
     return Server(app).get_app()
 
+app = create_app()
+
 
 if __name__ == "__main__":
     import uvicorn

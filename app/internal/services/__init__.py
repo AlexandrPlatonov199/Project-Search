@@ -41,4 +41,5 @@ class Services(containers.DeclarativeContainer):
     profile_service = providers.Factory(
         ProfileService,
         profile_repository=repositories.profile_repository,
+        jwt_service=jwt_service,
     )

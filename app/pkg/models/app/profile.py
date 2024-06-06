@@ -9,7 +9,8 @@ from app.pkg.models.base import BaseModel
 __all__ = [
     "CreateProfileCommand",
     "Profile",
-           ]
+    "ReadProfileQuery",
+]
 
 
 class ProfileBade(BaseModel):
@@ -58,4 +59,8 @@ class Profile(_Profile):
 
 class CreateProfileCommand(_Profile):
     ...
+
+
+class ReadProfileQuery(BaseModel):
+    user_id: uuid.UUID = ProfileField.user_id
 

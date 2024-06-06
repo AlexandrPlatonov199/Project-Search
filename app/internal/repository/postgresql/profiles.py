@@ -23,3 +23,15 @@ class ProfileRepository(Repository):
         async with get_connection() as cur:
             await cur.execute(q, cmd.to_dict())
             return await cur.fetchone()
+
+    @collect_response
+    async def read(self, query: models.ReadProfileQuery) -> models.Profile:
+        q = """
+            select 
+                id , user_id, first_name, last_name, telegram, bio
+            from profiles
+            where user_id = %(user_id)s
+            """
+        async with get_connection() as cur:
+            await cur.execute(q, query.to_dict())
+            return await cur.fetchone()
