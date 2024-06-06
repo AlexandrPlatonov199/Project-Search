@@ -4,3 +4,6 @@ run:
 
 migrate:
 	poetry run python -m scripts.migrate
+
+docker_up:
+	docker-compose up --build -d
