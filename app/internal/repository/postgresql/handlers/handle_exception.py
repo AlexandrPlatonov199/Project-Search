@@ -15,7 +15,7 @@ __all__ = ["handle_exception"]
 logger = get_logger(__name__)
 
 
-def handle_exception(func: Callable[..., Model]):
+def handle_exception(func: Callable[..., Model]): # noqa
     """Decorator Catching Postgresql Query Exceptions.
 
     Args:

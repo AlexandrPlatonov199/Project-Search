@@ -28,7 +28,7 @@ class ProfileRepository(Repository):
     @collect_response
     async def read(self, query: models.ReadProfileQuery) -> models.Profile:
         q = """
-            select 
+            select
                 id , user_id, first_name, last_name, telegram, bio
             from profiles
             where user_id = %(user_id)s
