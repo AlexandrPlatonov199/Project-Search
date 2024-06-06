@@ -10,6 +10,8 @@ __all__ = [
     "CreateProfileCommand",
     "Profile",
     "ReadProfileQuery",
+    "UpdateProfileCommand",
+
 ]
 
 
@@ -58,6 +60,10 @@ class Profile(_Profile):
 
 
 class CreateProfileCommand(_Profile):
+    ...
+
+
+class UpdateProfileCommand(_Profile):
     ...
 
 

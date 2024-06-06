@@ -7,7 +7,7 @@ from starlette import status
 from dependency_injector.wiring import inject, Provide
 
 from app.internal.routes import profile_router
-from app.internal.services import ProfileService, Services, JWTService
+from app.internal.services import ProfileService, Services
 from app.pkg import models
 
 
@@ -40,7 +40,7 @@ async def create_profile(
 @profile_router.get(
     "/{user_id:uuid}",
     status_code=status.HTTP_200_OK,
-    description="Получение профиля пользователя",
+    description="Get profile user.",
 )
 @inject
 async def read_profile(
@@ -54,6 +54,29 @@ async def read_profile(
 ):
     return await profile_service.read_profile(
         query=models.ReadProfileQuery(user_id=user_id),
+        response=response,
+        access_token_from_cookie=access_token_from_cookie,
+        refresh_token_from_cookie=refresh_token_from_cookie,
+        access_token_from_header=access_token_from_header,
+    )
+
+
+@profile_router.put(
+    "/",
+    status_code=status.HTTP_200_OK,
+    description="Update profile user."
+)
+@inject
+async def update_profile(
+        response: fastapi.Response,
+        cmd: models.UpdateProfileCommand,
+        profile_service: ProfileService = Depends(Provide[Services.profile_service]),
+        access_token_from_cookie: typing.Optional[str] = fastapi.Cookie(None, alias="access_token"),
+        refresh_token_from_cookie: typing.Optional[str] = fastapi.Cookie(None, alias="refresh_token"),
+        access_token_from_header: typing.Optional[str] = fastapi.Header(None, alias="Authorization"),
+):
+    return await profile_service.update_profile(
+        cmd=cmd,
         response=response,
         access_token_from_cookie=access_token_from_cookie,
         refresh_token_from_cookie=refresh_token_from_cookie,

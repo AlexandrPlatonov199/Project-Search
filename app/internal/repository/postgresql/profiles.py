@@ -35,3 +35,18 @@ class ProfileRepository(Repository):
         async with get_connection() as cur:
             await cur.execute(q, query.to_dict())
             return await cur.fetchone()
+
+    @collect_response
+    async def update(self, cmd: models.UpdateProfileCommand) -> models.Profile:
+        q = """
+            update profiles
+            set
+                first_name = %(first_name)s,
+                last_name = %(last_name)s,
+                bio = %(bio)s
+            where user_id = %(user_id)s
+            returning id, user_id, first_name, last_name, telegram, bio
+            """
+        async with get_connection() as cur:
+            await cur.execute(q, cmd.to_dict())
+            return await cur.fetchone()
