@@ -19,6 +19,10 @@ isort:
 black:
 	black ${files_to_fmt}
 
+## Check google spec.
+pylint:
+	pylint ${files_to_check}
+
 ## Check code formatting
 black_check:
 	black --check ${files_to_check}
@@ -26,3 +30,8 @@ black_check:
 ## Check pep8
 flake8:
 	flake8 ${files_to_check}
+
+
+## Check google spec.
+pylint:
+	pylint ${files_to_check}

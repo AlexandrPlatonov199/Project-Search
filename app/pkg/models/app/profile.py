@@ -1,3 +1,4 @@
+"""Models of profile object."""
 import typing
 import uuid
 
@@ -20,6 +21,17 @@ class ProfileBade(BaseModel):
 
 
 class ProfileField:
+    """
+        Поля модели профиля.
+
+        Attributes:
+            id (PositiveInt): Идентификатор профиля.
+            user_id (uuid.UUID): Идентификатор пользователя.
+            first_name (typing.Optional[str]): Имя пользователя.
+            last_name (typing.Optional[str]): Фамилия пользователя.
+            telegram (typing.Optional[str]): Телеграм пользователя.
+            bio (typing.Optional[str]): Биография пользователя.
+    """
     id: PositiveInt = Field()
     user_id: uuid.UUID = Field()
     first_name: typing.Optional[str] = Field(

@@ -1,3 +1,4 @@
+"""Routes for profile module."""
 import typing
 import uuid
 

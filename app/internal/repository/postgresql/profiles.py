@@ -1,3 +1,4 @@
+"""Репозиторий для профиля."""
 from typing import List
 
 from app.internal.repository.postgresql.connection import get_connection
@@ -11,6 +12,7 @@ __all__ = ["ProfileRepository"]
 
 
 class ProfileRepository(Repository):
+    """Реализация репозитория профиля."""
     @collect_response
     async def create(self, cmd: models.CreateProfileCommand) -> models.Profile:
         q = """

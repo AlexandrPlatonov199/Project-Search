@@ -1,7 +1,6 @@
 """Routes for user module."""
 import uuid
 
-import fastapi
 from dependency_injector.wiring import Provide, inject
 from fastapi import Depends, status
 

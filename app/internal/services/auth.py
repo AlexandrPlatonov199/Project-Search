@@ -1,3 +1,4 @@
+"""Service for manage auth."""
 import fastapi
 
 from app.internal.repository.postgresql import users
@@ -11,7 +12,8 @@ class AuthService:
     Сервис для аутентификации и авторизации пользователей.
 
     Args:
-        user_repository (UserRepository): Репозиторий для взаимодействия с пользователями.
+        user_repository (UserRepository): Репозиторий
+         для взаимодействия с пользователями.
         jwt_service (JWTService): Сервис для работы с JWT токенами.
     """
 
@@ -29,11 +31,13 @@ class AuthService:
         self, response: fastapi.Response, cmd: models.AuthorizeUserCommand
     ) -> models.AuthorizeUser:
         """
-        Регистрирует нового пользователя и генерирует авторизационный ответ с JWT токенами.
+        Регистрирует нового пользователя и генерирует авторизационный ответ
+         с JWT токенами.
 
         Args:
             response (fastapi.Response): HTTP-ответ.
-            cmd (models.AuthorizeUserCommand): Команда с данными пользователя для регистрации.
+            cmd (models.AuthorizeUserCommand): Команда с данными
+             пользователя для регистрации.
 
         Returns:
             models.AuthorizeUser: Данные авторизованного пользователя с JWT токенами.
@@ -52,7 +56,8 @@ class AuthService:
 
         Args:
             response (fastapi.Response): HTTP-ответ.
-            cmd (models.AuthorizeUserCommand): Команда с данными пользователя для авторизации.
+            cmd (models.AuthorizeUserCommand): Команда с данными пользователя
+             для авторизации.
 
         Returns:
             models.AuthorizeUser: Данные авторизованного пользователя с JWT токенами.

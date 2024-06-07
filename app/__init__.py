@@ -18,9 +18,6 @@ def create_app() -> FastAPI:
     return Server(app).get_app()
 
 
-app = create_app()
-
-
 if __name__ == "__main__":
     import uvicorn
 

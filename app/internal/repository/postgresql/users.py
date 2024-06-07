@@ -1,4 +1,4 @@
-"""Repository for user."""
+"""Репозиторий для пользователя."""
 
 from app.internal.repository.postgresql.connection import get_connection
 from app.internal.repository.postgresql.handlers.collect_response import (
@@ -11,7 +11,7 @@ __all__ = ["UserRepository"]
 
 
 class UserRepository(Repository):
-    """User repository implementation."""
+    """Реализация репозитория пользователя."""
 
     @collect_response
     async def create(self, cmd: models.AuthorizeUserCommand) -> models.User:

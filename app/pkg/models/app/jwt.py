@@ -1,3 +1,4 @@
+"""Models of jwt object."""
 import uuid
 
 from pydantic import BaseModel

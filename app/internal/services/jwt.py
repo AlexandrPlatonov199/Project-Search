@@ -1,3 +1,4 @@
+"""Service for manage jwt."""
 import datetime
 import typing
 import uuid
@@ -87,7 +88,8 @@ class JWTService:
             access_token (str): Access токен.
 
         Returns:
-            typing.Optional[models.JWTData]: Данные JWT, если декодирование успешно, иначе None.
+            typing.Optional[models.JWTData]: Данные JWT, если декодирование
+             успешно, иначе None.
         """
         try:
             data = jwt.decode(
@@ -137,7 +139,8 @@ class JWTService:
             refresh_token (str): Refresh токен.
 
         Returns:
-            typing.Optional[models.JWTData]: Данные JWT, если декодирование успешно, иначе None.
+            typing.Optional[models.JWTData]: Данные JWT,
+             если декодирование успешно, иначе None.
         """
         try:
             data = jwt.decode(
@@ -231,31 +234,68 @@ class JWTService:
         is_activated = True
         return is_activated
 
-    async def extract_access_token(self, access_token_from_cookie: typing.Optional[str],
-                                   access_token_from_header: typing.Optional[str]) -> typing.Optional[str]:
-        if access_token_from_header is not None and access_token_from_header.startswith("Bearer "):
+    async def extract_access_token(
+            self,
+            access_token_from_cookie: typing.Optional[str],
+            access_token_from_header: typing.Optional[str]
+    ) -> typing.Optional[str]:
+        if (access_token_from_header is not None
+                and access_token_from_header.startswith("Bearer ")):
             return access_token_from_header.lstrip("Bearer").strip()
         return access_token_from_cookie
 
-    async def extract_refresh_token(self, refresh_token_from_cookie: typing.Optional[str]) -> typing.Optional[str]:
+    async def extract_refresh_token(
+            self,
+            refresh_token_from_cookie: typing.Optional[str]
+    ) -> typing.Optional[str]:
         return refresh_token_from_cookie
 
-    async def refresh_tokens(self, response: fastapi.Response, jwt_data: typing.Optional[models.JWTData]) -> None:
-        new_access_token = self.issue_access_token(user_id=jwt_data.user_id, is_activated=jwt_data.is_activated)
-        new_refresh_token = self.issue_refresh_token(user_id=jwt_data.user_id, is_activated=jwt_data.is_activated)
-        self.set_cookie(response=response, name="access_token", value=new_access_token,
-                        expires=self.access_token_expires_utc)
-        self.set_cookie(response=response, name="refresh_token", value=new_refresh_token,
-                        expires=self.refresh_token_expires_utc)
+    async def refresh_tokens(
+            self,
+            response: fastapi.Response,
+            jwt_data: typing.Optional[models.JWTData]
+    ) -> None:
+        new_access_token = self.issue_access_token(
+            user_id=jwt_data.user_id,
+            is_activated=jwt_data.is_activated
+        )
+        new_refresh_token = self.issue_refresh_token(
+            user_id=jwt_data.user_id,
+            is_activated=jwt_data.is_activated
+        )
+        self.set_cookie(
+            response=response,
+            name="access_token",
+            value=new_access_token,
+            expires=self.access_token_expires_utc
+        )
+        self.set_cookie(
+            response=response,
+            name="refresh_token",
+            value=new_refresh_token,
+            expires=self.refresh_token_expires_utc
+        )
 
     async def get_jwt_data(
             self,
             response: fastapi.Response,
-            access_token_from_cookie: typing.Optional[str] = fastapi.Cookie(None, alias="access_token"),
-            refresh_token_from_cookie: typing.Optional[str] = fastapi.Cookie(None, alias="refresh_token"),
-            access_token_from_header: typing.Optional[str] = fastapi.Header(None, alias="Authorization"),
+            access_token_from_cookie: typing.Optional[str] = fastapi.Cookie(
+                None,
+                alias="access_token"
+            ),
+            refresh_token_from_cookie: typing.Optional[str] = fastapi.Cookie(
+                None,
+                alias="refresh_token"
+            ),
+            access_token_from_header: typing.Optional[str] = fastapi.Header(
+                None,
+                alias="Authorization"
+            ),
     ) -> typing.Optional[models.JWTData]:
-        access_token = await self.extract_access_token(access_token_from_cookie, access_token_from_header)
+        access_token = await self.extract_access_token(
+            access_token_from_cookie,
+            access_token_from_header
+        )
         refresh_token = await self.extract_refresh_token(refresh_token_from_cookie)
 
         jwt_data = self.decode_access_token(access_token)

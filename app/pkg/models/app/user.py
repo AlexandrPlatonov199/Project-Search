@@ -21,6 +21,15 @@ class BaseUser(BaseModel):
 
 
 class UserFields:
+    """
+        Поля модели пользователя.
+
+        Attributes:
+            id (uuid.UUID): Идентификатор пользователя.
+            email (typing.Optional[EmailStr]): Емаил пользователя.
+            password (str): Пароль пользователя.
+            is_activated (bool): Статус активации пользователя.
+    """
     id: uuid.UUID = Field()
     email: typing.Optional[EmailStr] = Field(
         description="Емаил пользователя.",

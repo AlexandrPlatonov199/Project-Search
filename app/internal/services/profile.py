@@ -1,4 +1,4 @@
-"""Модуль для обработки профилей пользователей."""
+"""Service for manage profile."""
 
 import typing
 
@@ -49,9 +49,12 @@ class ProfileService:
         Args:
             response (fastapi.Response): HTTP-ответ.
             cmd (models.CreateProfileCommand): Данные для создания профиля.
-            access_token_from_cookie (typing.Optional[str], optional): Access токен из cookie. Defaults to None.
-            refresh_token_from_cookie (typing.Optional[str], optional): Refresh токен из cookie. Defaults to None.
-            access_token_from_header (typing.Optional[str], optional): Access токен из заголовка. Defaults to None.
+            access_token_from_cookie (typing.Optional[str], optional):
+             Access токен из cookie. Defaults to None.
+            refresh_token_from_cookie (typing.Optional[str], optional):
+             Refresh токен из cookie. Defaults to None.
+            access_token_from_header (typing.Optional[str], optional):
+             Access токен из заголовка. Defaults to None.
 
         Returns:
             models.Profile: Созданный профиль пользователя.
@@ -91,9 +94,12 @@ class ProfileService:
         Args:
             response (fastapi.Response): HTTP-ответ.
             query (models.ReadProfileQuery): Запрос на чтение профиля.
-            access_token_from_cookie (typing.Optional[str], optional): Access токен из cookie. Defaults to None.
-            refresh_token_from_cookie (typing.Optional[str], optional): Refresh токен из cookie. Defaults to None.
-            access_token_from_header (typing.Optional[str], optional): Access токен из заголовка. Defaults to None.
+            access_token_from_cookie (typing.Optional[str], optional):
+             Access токен из cookie. Defaults to None.
+            refresh_token_from_cookie (typing.Optional[str], optional):
+             Refresh токен из cookie. Defaults to None.
+            access_token_from_header (typing.Optional[str], optional):
+             Access токен из заголовка. Defaults to None.
 
         Returns:
             [type]: [description]

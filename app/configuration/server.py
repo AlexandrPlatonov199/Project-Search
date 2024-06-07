@@ -1,11 +1,9 @@
 """Server configuration."""
-import logging
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.configuration.events import on_shutdown, on_startup
-from app.configuration.logger import EndpointFilter
 from app.internal.pkg.middlewares.handle_http_exceptions import (
     handle_api_exceptions,
     handle_drivers_exceptions,
@@ -20,26 +18,26 @@ __all__ = ["Server"]
 
 
 class Server:
-    """Register all requirements for the correct work of server instance.
+    """
+    Регистрация всех необходимых требований для корректной работы экземпляра сервера.
 
     Attributes:
-        __app:
-            ``FastAPI`` application instance.
-        __app_name:
-            Name of application used for prometheus metrics and for loki logs.
-            Getting from :class:`.Settings`:attr:`.INSTANCE_APP_NAME`.
+        __app (FastAPI): Экземпляр приложения ``FastAPI``.
+        __app_name (str): Имя приложения, используемое для метрик Prometheus
+         и логов Loki.
+            Получено из :class:`.Settings`:attr:`.INSTANCE_APP_NAME`.
     """
 
     __app: FastAPI
     __app_name: str = settings.API.INSTANCE_APP_NAME
 
     def __init__(self, app: FastAPI):
-        """Initialize server instance. Register all requirements for the
-        correct work of server instance.
+        """
+        Инициализирует экземпляр сервера и регистрирует все необходимые требования
+        для корректной работы экземпляра сервера.
 
         Args:
-            app:
-                ``FastAPI`` application instance.
+            app (FastAPI): Экземпляр приложения ``FastAPI``.
         """
 
         self.__app = app
@@ -49,20 +47,21 @@ class Server:
         self._register_http_exceptions(app)
 
     def get_app(self) -> FastAPI:
-        """Getter of the current application instance.
+        """
+        Возвращает текущий экземпляр приложения.
 
         Returns:
-            ``FastAPI`` application instance.
+            FastAPI: Экземпляр приложения ``FastAPI``.
         """
         return self.__app
 
     @staticmethod
     def _register_events(app: FastAPITypes.instance) -> None:
-        """Register :func:`.on_startup` and :func:`.on_shutdown` events.
+        """
+        Регистрирует события :func:`.on_startup` и :func:`.on_shutdown`.
 
         Args:
-            app:
-                ``FastAPI`` application instance.
+            app (FastAPI): Экземпляр приложения ``FastAPI``.
 
         Returns:
             None
@@ -73,11 +72,11 @@ class Server:
 
     @staticmethod
     def _register_routes(app: FastAPITypes.instance) -> None:
-        """Include routers in ``FastAPI`` instance from ``__routes__``.
+        """
+        Включает роутеры в экземпляр ``FastAPI`` из ``__routes__``.
 
         Args:
-            app:
-                ``FastAPI`` application instance.
+            app (FastAPI): Экземпляр приложения ``FastAPI``.
 
         Returns:
             None
@@ -87,12 +86,12 @@ class Server:
 
     @staticmethod
     def __register_cors_origins(app: FastAPITypes.instance) -> None:
-        """Register cors origins. In production, you should use only trusted
-        origins.
+        """
+        Регистрирует CORS origins. В производственной среде следует использовать
+         только доверенные origins.
 
         Args:
-            app:
-                ``FastAPI`` application instance.
+            app (FastAPI): Экземпляр приложения ``FastAPI``.
 
         Returns:
             None
@@ -106,12 +105,12 @@ class Server:
             allow_headers=["*"],
         )
 
-    def _register_middlewares(self, app) -> None:
-        """Apply routes middlewares.
+    def _register_middlewares(self, app: FastAPI) -> None:
+        """
+        Применяет middlewares для маршрутов.
 
         Args:
-            app:
-                ``FastAPI`` application instance.
+            app (FastAPI): Экземпляр приложения ``FastAPI``.
 
         Returns:
             None
@@ -121,13 +120,13 @@ class Server:
 
     @staticmethod
     def _register_http_exceptions(app: FastAPITypes.instance) -> None:
-        """Register http exceptions.
-
-        instance handle ``BaseApiExceptions`` raises inside functions.
+        """
+        Регистрирует HTTP исключения.
+        Экземпляр обрабатывает исключения ``BaseAPIException``,
+        возникающие внутри функций.
 
         Args:
-            app:
-                ``FastAPI`` application instance.
+            app (FastAPI): Экземпляр приложения ``FastAPI``.
 
         Returns:
             None
@@ -136,16 +135,3 @@ class Server:
         app.add_exception_handler(BaseAPIException, handle_api_exceptions)
         app.add_exception_handler(BaseAPIException, handle_drivers_exceptions)
         app.add_exception_handler(BaseAPIException, handle_internal_exception)
-
-    @staticmethod
-    def __filter_logs(endpoint: str) -> None:
-        """Filter ignore /metrics in uvicorn logs.
-
-        Args:
-            endpoint: Specific endpoint to filter logs.
-
-        Returns:
-            None
-        """
-
-        logging.getLogger("uvicorn.access").addFilter(EndpointFilter(endpoint=endpoint))

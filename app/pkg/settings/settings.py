@@ -1,4 +1,5 @@
-"""Модуль для загрузки настроек из `.env` или, если сервер запущен с параметром `dev`, из `.env.dev`."""
+"""Модуль для загрузки настроек из `.env` или, если сервер запущен
+с параметром `dev`, из `.env.dev`."""
 
 import datetime
 import pathlib
@@ -49,7 +50,7 @@ class Postgresql(_Settings):
     MAX_CONNECTION: PositiveInt = 16
 
     @root_validator(pre=True)
-    def build_dsn(cls, values: dict):
+    def build_dsn(cls, values: dict):  # pylint: disable=no-self-argument
         """Создает строку подключения к PostgreSQL."""
 
         values["DSN"] = PostgresDsn.build(
@@ -70,7 +71,10 @@ class Logging(_Settings):
     FOLDER_PATH: pathlib.Path = pathlib.Path("./src/logs")
 
     @validator("FOLDER_PATH")
-    def __create_dir_if_not_exist(cls, v: pathlib.Path):
+    def __create_dir_if_not_exist(  # pylint: disable=unused-private-member, no-self-argument
+            cls,
+            v: pathlib.Path,
+    ):
         """Создает каталог, если его не существует."""
 
         if not v.exists():
@@ -98,7 +102,7 @@ class Jwt(_Settings):
     REFRESH_TOKEN_EXPIRES: datetime.timedelta = datetime.timedelta(days=30)
 
     @root_validator(pre=True)
-    def gen_rsa_keys(cls, values: dict):
+    def gen_rsa_keys(cls, values: dict):  # pylint: disable=no-self-argument
         """Генерирует пары ключей RSA."""
 
         public_key_access, private_key_access = generate_rsa_keys()
