@@ -32,6 +32,6 @@ flake8:
 	flake8 ${files_to_check}
 
 
-## Check google spec.
-pylint:
-	pylint ${files_to_check}
+## Check pep8
+ruff:
+	ruff ${files_to_check}
