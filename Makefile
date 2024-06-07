@@ -35,3 +35,9 @@ flake8:
 ## Check pep8
 ruff:
 	ruff ${files_to_check}
+
+
+## Check code quality
+chk: check
+lint: check
+check: flake8 pylint ruff black_check

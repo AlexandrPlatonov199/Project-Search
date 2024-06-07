@@ -13,6 +13,7 @@ __all__ = ["ProfileRepository"]
 
 class ProfileRepository(Repository):
     """Реализация репозитория профиля."""
+
     @collect_response
     async def create(self, cmd: models.CreateProfileCommand) -> models.Profile:
         q = """

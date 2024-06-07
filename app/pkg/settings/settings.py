@@ -72,8 +72,8 @@ class Logging(_Settings):
 
     @validator("FOLDER_PATH")
     def __create_dir_if_not_exist(  # pylint: disable=unused-private-member, no-self-argument
-            cls,
-            v: pathlib.Path,
+        cls,
+        v: pathlib.Path,
     ):
         """Создает каталог, если его не существует."""
 
